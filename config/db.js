@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const mongoose = require("mongoose")
 
 const connectDB = async () => {
   const conn = await mongoose.connect(process.env.MONGO_URI, {
@@ -8,4 +8,4 @@ const connectDB = async () => {
   console.log('MongoDB Connected:'.bgBlue.black.bold + ` ${conn.connection.host}`.blue.bold)
 }
 
-export default connectDB
+module.exports = connectDB

@@ -1,8 +1,9 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import morgan from 'morgan'
-import colors from 'colors'
-import connectDB from './config/db.js'
+const express = require("express")
+const dotenv = require("dotenv")
+const morgan = require("morgan")
+const colors = require("colors")
+const errorHandler = require("./middleware/error")
+const connectDB = require("./config/db.js")
 
 // Load env vars
 dotenv.config({path: './config/config.env'})
@@ -11,7 +12,8 @@ dotenv.config({path: './config/config.env'})
 connectDB()
 
 // Route files
-import bootcamps from './routes/bootcamps.js'
+const bootcamps = require("./routes/bootcamps.js")
+const courses = require("./routes/courses.js")
 
 
 const app = express()
@@ -26,6 +28,9 @@ if(process.env.NODE_ENV === 'development') {
 
 // mount routers
 app.use('/api/v1/bootcamps', bootcamps)
+app.use('/api/v1/courses', courses)
+
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT || 5000

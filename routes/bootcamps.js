@@ -1,12 +1,21 @@
-import express from 'express'
-import {
+const express = require('express')
+const {
   getBootcamps,
   getBootcamp,
   createBootcamp,
   updateBootcamp,
-  deleteBootcamp } from '../controllers/bootcamps.js'
+  deleteBootcamp,
+  getBootcampsInRadius } = require('../controllers/bootcamps.js')
+
+  // Include other resource routers
+  const courseRouter = require('./courses')
 
 const bootcamps = express.Router()
+
+// Reroute into other resource routers
+bootcamps.use('/:bootcampId/courses', courseRouter)
+
+bootcamps.route('/radius/:zipcode/:distance').get(getBootcampsInRadius)
 
 bootcamps
   .route('/')
@@ -19,4 +28,4 @@ bootcamps
   .put(updateBootcamp)
   .delete(deleteBootcamp)
 
-export default bootcamps
+module.exports = bootcamps
