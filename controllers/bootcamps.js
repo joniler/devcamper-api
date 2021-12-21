@@ -50,14 +50,16 @@ const createBootcamp = asyncHandler(
 // @access    Private
 const updateBootcamp = asyncHandler(
   async (req, res, next) => {
-    const bootcamp = await Bootcamp.findById(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    })
+    let bootcamp = await Bootcamp.findById(req.params.id)
 
     if(!bootcamp) {
       return next(`Bootcamp not found with the id of ${req.params.id}`)
     }
+
+    bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    })
 
     res.status(200).json({
       success: true,
